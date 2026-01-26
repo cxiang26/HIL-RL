@@ -59,6 +59,34 @@ SiLRI: A state-wise Lagrangian RL algorithm for real-world robotic manipulation 
 
 This repository is built upon a fork of [Lerobot](https://github.com/huggingface/lerobot) and [HIL-SERL](https://github.com/rail-berkeley/hil-serl). Unlike the original `hil-serl` and `ConRFT` JAX implementation, we reimplement all algorithms in PyTorch for improved usability and better compatibility with the robotics community.
 
+### 📚 深入理解项目（推荐阅读）
+
+- **[PROJECT_ANALYSIS.md](PROJECT_ANALYSIS.md)**: 项目深度分析指南
+  - 核心架构详解
+  - 关键组件说明
+  - 数据流与训练流程
+  - 二次开发指南
+  - 学习路径建议
+
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)**: 快速参考手册
+  - 常用命令速查
+  - 配置文件模板
+  - 代码片段示例
+  - 调试技巧
+  - 常见问题排查
+
+- **[ARCHITECTURE_DIAGRAM.md](ARCHITECTURE_DIAGRAM.md)**: 架构图与数据流
+  - 系统架构可视化
+  - Actor-Learner 通信流程
+  - SiLRI 算法架构
+  - 环境接口层次
+
+### 🤖 添加新机器人
+
+- **[docs/QUICK_START_NEW_ROBOT.md](docs/QUICK_START_NEW_ROBOT.md)**: 5分钟快速开始
+- **[docs/ADD_NEW_ROBOT.md](docs/ADD_NEW_ROBOT.md)**: 完整集成指南
+- **[docs/CODE_EXAMPLE.md](docs/CODE_EXAMPLE.md)**: 代码修改示例
+
 
 ## 🚀 Installation
 
