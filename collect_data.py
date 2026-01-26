@@ -345,11 +345,25 @@ def control_loop(
             else:
                 print('No intervention!!!!!!!!!!!!!!!!!!!')
 
+            # Convert terminated to Python bool if it's a tensor
+            terminated_bool = terminated
+            if isinstance(terminated, torch.Tensor):
+                terminated_bool = terminated.cpu().item() if terminated.numel() == 1 else bool(terminated.cpu().numpy())
+            elif isinstance(terminated, (np.ndarray, np.bool_)):
+                terminated_bool = bool(terminated.item() if hasattr(terminated, 'item') else terminated)
+            
+            # Convert reward to Python float if it's a tensor
+            reward_value = reward
+            if isinstance(reward, torch.Tensor):
+                reward_value = reward.cpu().item() if reward.numel() == 1 else float(reward.cpu().numpy())
+            elif isinstance(reward, (np.ndarray, np.floating)):
+                reward_value = float(reward.item() if hasattr(reward, 'item') else reward)
+            
             frame = {
                 **observations,
                 ACTION: action_to_record.cpu() if isinstance(action_to_record, torch.Tensor) else action_to_record,
-                REWARD: np.array([transition[TransitionKey.REWARD]], dtype=np.float32),
-                DONE: np.array([terminated], dtype=bool),
+                REWARD: np.array([reward_value], dtype=np.float32),
+                DONE: np.array([terminated_bool], dtype=bool),
                 # TRUNCATED: np.array([truncated], dtype=bool),
             }
             complementary = transition.get(TransitionKey.COMPLEMENTARY_DATA, {})
@@ -434,7 +448,9 @@ def replay_trajectory(
 @hydra.main(config_path="./cfg", config_name="config", version_base=None) 
 def main(env_cfg):
     if "franka" in env_cfg.robot_config.robot_type:
-        lerobot_config_path = "../../collect_data_franka.json"
+        lerobot_config_path = "./train_config_collect_data.json"
+    elif "a2d" in env_cfg.robot_config.robot_type:
+        lerobot_config_path = "../../train_config_collect_data_a2d.json"
     else:
         raise ValueError(f"Invalid robot type: {env_cfg.robot_type}")
 

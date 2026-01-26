@@ -53,7 +53,7 @@ from pathlib import Path
 from pprint import pformat
 
 import grpc
-from keras.src.callbacks import optimizer
+# from keras.src.callbacks import optimizer
 import torch
 from termcolor import colored
 from torch import nn
@@ -119,12 +119,20 @@ new_offline_transition_num = 0
 # @parser.wrap()
 @hydra.main(config_path="./cfg", config_name="config") 
 def train_cli(env_cfg):
+    # 获取脚本文件所在目录，构建绝对路径（不受 Hydra 工作目录改变影响）
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # learner.py 在项目根目录，直接使用 script_dir 作为项目根目录
+    project_root = script_dir
+    
     if env_cfg.robot_config.robot_type == "ur_wrist":
-        env_cfg.lerobot_config_path = "../../../../../train_config_silri_ur.json"
+        env_cfg.lerobot_config_path = os.path.join(project_root, "train_config_silri_ur.json")
     elif "franka" in env_cfg.robot_config.robot_type:
-        env_cfg.lerobot_config_path = "../../../../../train_config_silri_franka.json"
+        env_cfg.lerobot_config_path = os.path.join(project_root, "train_config_silri_franka.json")
     elif env_cfg.robot_config.robot_type == "sim" :
-        env_cfg.lerobot_config_path = "../../../../../train_config_silri_sim.json"
+        env_cfg.lerobot_config_path = os.path.join(project_root, "train_config_silri_sim.json")
+    elif "a2d" in env_cfg.robot_config.robot_type:
+        env_cfg.lerobot_config_path = os.path.join(project_root, "train_config_silri_a2d.json")
     else:
         raise ValueError(f"Invalid robot type: {env_cfg.robot_type}")
     
@@ -154,6 +162,9 @@ def train_cli(env_cfg):
     if env_cfg.robot_config.robot_type == "sim":
         cfg.env.features["observation.state"].shape = [18]
         cfg.policy.input_features["observation.state"].shape = [18]
+    elif env_cfg.robot_config.robot_type == "a2d":
+        cfg.env.features["observation.state"].shape = [7]
+        cfg.policy.input_features["observation.state"].shape = [7]
     else:
         cfg.env.features["observation.state"].shape = [14] if env_cfg.use_force else [8]
         cfg.policy.input_features["observation.state"].shape = [14] if env_cfg.use_force else [8]
@@ -1008,8 +1019,7 @@ def offline_training(cfg: TrainRLServerPipelineConfig, policy: nn.Module, optimi
 
 
 
-def expert_training(offline_replay_buffer, optimizers, policy, clip_grad_norm_value, device, async_prefetch, wandb_logger, optimization_step):
-    batch_size = 256
+def expert_training(offline_replay_buffer, optimizers, policy, clip_grad_norm_value, device, async_prefetch, wandb_logger, optimization_step, batch_size=256):
     
     global expert_training_step
 
@@ -1639,7 +1649,7 @@ def process_transitions(
                 offline_replay_buffer.add(**transition)
                 new_offline_transition_num += 1
                 if new_offline_transition_num % 50 == 0 and "silri" in cfg.policy.type:
-                    expert_training(offline_replay_buffer, optimizers, policy, clip_grad_norm_value, device, async_prefetch, wandb_logger, optimization_step)
+                    expert_training(offline_replay_buffer, optimizers, policy, clip_grad_norm_value, device, async_prefetch, wandb_logger, optimization_step, batch_size=batch_size)
                 
             new_transition_num += 1
 

@@ -140,17 +140,20 @@ def train(cfg: TrainPipelineConfig):
     logging.info("Creating dataset")
     origin_root_path = cfg.dataset.root
     
-    task_name = os.path.basename(origin_root_path)
+    # Get task_name from parent directory (e.g., "test_a2d_task" from "../../experiments/test_a2d_task/offline_dataset")
+    task_name = os.path.basename(os.path.dirname(origin_root_path))
 
     print('task_name:', task_name)
     
     # cfg.dataset.repo_id = f"{task_name}_success"
-    cfg.dataset.root = os.path.join(origin_root_path, "../", task_name + "_success")
+    # Dataset is located at: offline_dataset/{task_name}_success/
+    cfg.dataset.root = os.path.join(origin_root_path, task_name + "_success")
     print('success dataset cfg.dataset:', cfg.dataset)
     success_dataset = make_dataset(cfg)
 
     # cfg.dataset.repo_id = f"{task_name}_failure"
-    cfg.dataset.root = os.path.join(origin_root_path, "../", task_name + "_failure")
+    # Dataset is located at: offline_dataset/{task_name}_failure/
+    cfg.dataset.root = os.path.join(origin_root_path, task_name + "_failure")
     print('failure dataset cfg.dataset:', cfg.dataset)
     failure_dataset = make_dataset(cfg)
 

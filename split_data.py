@@ -52,7 +52,8 @@ def split_dataset_by_reward(
     # Load source dataset
     logging.info(f"Loading dataset from {root}...")
     input("Press Enter to continue...")
-    dataset = LeRobotDataset(repo_id, root=root)
+    # Use pyav backend to avoid torchcodec compatibility issues with older PyTorch versions
+    dataset = LeRobotDataset(repo_id, root=root, video_backend="pyav")
     
     logging.info(f"Dataset loaded with {dataset.num_episodes} episodes")
     logging.info(f"Features: {list(dataset.features.keys())}")
@@ -195,6 +196,7 @@ def create_subset_dataset(
     fps = source_dataset.fps
     output_root = os.path.join(output_root, output_repo_id)
     # Create new dataset
+    # Use pyav backend to avoid torchcodec compatibility issues with older PyTorch versions
     output_dataset = LeRobotDataset.create(
         repo_id=output_repo_id,
         fps=fps,
@@ -203,6 +205,7 @@ def create_subset_dataset(
         image_writer_threads=4,
         image_writer_processes=0,
         features=features,
+        video_backend="pyav",
     )
     
     logging.info(f"Output dataset will be saved to: {output_dataset.root.absolute()}")

@@ -139,6 +139,8 @@ def actor_cli(env_cfg):
         lerobot_config_path = "../../train_config_silri_franka.json"
     elif env_cfg.robot_config.robot_type == "sim":
         lerobot_config_path = "../../train_config_silri_sim.json"
+    elif "a2d" in env_cfg.robot_config.robot_type:
+        lerobot_config_path = "../../train_config_silri_a2d.json"
     else:
         raise ValueError(f"Invalid robot type: {env_cfg.robot_type}")
     with draccus.config_type("json"):
@@ -171,6 +173,9 @@ def actor_cli(env_cfg):
     if env_cfg.robot_config.robot_type == "sim":
         cfg.env.features["observation.state"].shape = [18]
         cfg.policy.input_features["observation.state"].shape = [18]
+    elif env_cfg.robot_config.robot_type == "a2d":
+        cfg.env.features["observation.state"].shape = [7]
+        cfg.policy.input_features["observation.state"].shape = [7]
     else:
         cfg.env.features["observation.state"].shape = [14] if env_cfg.use_force else [8]
         cfg.policy.input_features["observation.state"].shape = [14] if env_cfg.use_force else [8]
