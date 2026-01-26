@@ -1,0 +1,76 @@
+# A2D机器人配置
+robot_config:
+  robot_type: a2d  # 机器人类型标识
+  hz: 10          # 控制频率（Hz）
+  joint_dim: 7   # 关节数量（A2D有14个手臂关节）
+  gripper_dim: 1 # 手部执行器维度（左右手各6个）
+  
+  # 图像裁剪配置（可选）
+  image_crop: {
+      # "head": [[160, 640], [480, 1120]], # 需要调整
+      "head": [[320, 800], [240, 880]], # 需要调整
+      "right": [[0, 480], [104, 744]], # 需要调整
+      # "left": [[0, 480], [104, 744]]
+  }
+  
+  # 动作缩放（用于相对位姿控制）
+  action_scale: [0.02, 0.06, 1.0]  # [平移缩放, 旋转缩放, 夹爪缩放]
+  
+  # 相机配置
+  image_keys: ["head", "right"]  # 相机名称列表
+  # A2D支持的相机：
+  # - "head": 头部相机
+  # - "right": 右手相机
+  # - "left": 左手相机
+  
+  # 本体感觉键
+  proprio_keys: ["tcp_pose", "gripper_pose", "joints"]
+  
+  # 图像格式转换
+  bgr2rgb: true
+  
+  # 图像尺寸调整
+  image_resize:
+    "head": [128, 128, 3]
+    "right": [128, 128, 3]
+    "left": [128, 128, 3]
+  
+  # 从任务配置中继承的参数
+  target_pose: ${target_pose}
+  abs_pose_limit_low: ${abs_pose_limit_low}
+  abs_pose_limit_high: ${abs_pose_limit_high}
+  reset_joint: ${reset_joint}
+  
+  # 重置配置
+  random_reset: true
+  random_xy_range: 0.02      # XY平面随机范围（米）
+  random_rz_range: 0.05      # Z轴旋转随机范围（弧度）
+  gripper_sleep: 0.05        # 夹爪动作间隔（秒）
+  max_episode_length: ${max_episode_length}
+  
+  # 控制模式
+  control_mode: ${control_mode}  # "pose" 或 "joint"
+  
+  # 分类器配置
+  classifier_cfg: ${classifier_cfg}
+  gripper_penalty: ${gripper_penalty}
+  
+  # 夹爪配置
+  close_gripper: ${close_gripper}
+  fix_gripper: ${fix_gripper}
+  ego_mode: ${ego_mode}
+  
+  # 其他配置
+  absolute_action: false     # 是否使用绝对位姿动作
+  enable_rotation: true      # 是否启用旋转控制
+  
+  # A2D特定配置
+  enable_ik: false           # 是否启用逆运动学求解器（用于位姿控制）
+  reset_hand_positions: [1.,]  # 重置时的手部位置（可选）
+  # reset_head_positions: [-0.12825, 0.43632]  # 重置时的头部位置（可选）
+  reset_head_positions: [-0.43632, 0.43632]  # 重置时的头部位置（可选）
+
+  # reset_waist_positions: [0.67205, 51.96433] # 重置时的腰部位置（可选）
+  reset_waist_positions: [0.35, 32] # 重置时的腰部位置（可选） 40
+
+

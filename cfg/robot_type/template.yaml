@@ -1,0 +1,76 @@
+# 机器人配置模板
+# 复制此文件并重命名为你的机器人类型，例如: my_robot.yaml
+# 然后根据你的机器人特性修改配置
+
+robot_config:
+  # ========== 基本配置 ==========
+  robot_type: your_robot_name  # 重要：这个名称会在代码中用于判断机器人类型
+  hz: 10                       # 控制频率（Hz），通常设置为 10
+  
+  # ========== 机器人维度 ==========
+  joint_dim: 6                 # 关节数量（不包括夹爪）
+                               # Franka: 7, UR5/UR10: 6
+  gripper_dim: 1               # 夹爪维度，通常为 1
+  
+  # ========== 图像配置 ==========
+  # 图像裁剪（可选，用于聚焦感兴趣区域）
+  image_crop: {
+      "right": [[0, 480], [225, -50]]  # 格式: [高度范围, 宽度范围]
+      # "wrist": [[0, 480], [0, 640]]  # 可以添加多个相机
+  }
+  
+  # 相机名称列表（必须与你的相机系统匹配）
+  image_keys: ["right", "wrist"]
+  
+  # 图像尺寸调整（所有相机统一尺寸）
+  image_resize:
+    "right": [128, 128, 3]     # [高度, 宽度, 通道数]
+    "wrist": [128, 128, 3]
+  
+  # 颜色空间转换
+  bgr2rgb: true                # 如果相机输出BGR格式，设为true转换为RGB
+  
+  # ========== 动作配置 ==========
+  # 动作缩放（用于相对位姿控制模式）
+  # [平移缩放(m), 旋转缩放(rad), 夹爪缩放]
+  action_scale: [0.02, 0.06, 1.0]
+  
+  # 控制模式: "pose" (笛卡尔空间) 或 "joint" (关节空间)
+  control_mode: ${control_mode}
+  
+  # 是否使用绝对位姿动作（false表示使用相对动作）
+  absolute_action: false
+  
+  # 是否启用旋转控制
+  enable_rotation: true
+  
+  # ========== 本体感觉配置 ==========
+  # 本体感觉键（从机器人获取的状态信息）
+  proprio_keys: ["tcp_pose", "gripper_pose"]
+  # 可选: "joints", "ee_force", "arm_force"
+  
+  # ========== 从任务配置继承的参数 ==========
+  # 这些参数会在任务配置文件中定义
+  target_pose: ${target_pose}
+  abs_pose_limit_low: ${abs_pose_limit_low}    # 安全工作空间下限
+  abs_pose_limit_high: ${abs_pose_limit_high}  # 安全工作空间上限
+  reset_joint: ${reset_joint}                  # 重置时的关节位置
+  
+  # ========== 重置配置 ==========
+  random_reset: true           # 是否启用随机重置
+  random_xy_range: 0.02         # XY平面随机范围（米）
+  random_rz_range: 0.05         # Z轴旋转随机范围（弧度）
+  gripper_sleep: 0.05           # 夹爪动作间隔（秒），避免频繁开关
+  
+  # ========== 任务相关配置 ==========
+  max_episode_length: ${max_episode_length}  # 最大回合长度（步数）
+  
+  # ========== 分类器和奖励配置 ==========
+  classifier_cfg: ${classifier_cfg}
+  gripper_penalty: ${gripper_penalty}         # 夹爪动作惩罚值
+  
+  # ========== 夹爪配置 ==========
+  close_gripper: ${close_gripper}  # 重置时是否关闭夹爪
+  fix_gripper: ${fix_gripper}      # 是否固定夹爪（不控制）
+  ego_mode: ${ego_mode}            # 单人模式（干预和重置由一人完成）
+
