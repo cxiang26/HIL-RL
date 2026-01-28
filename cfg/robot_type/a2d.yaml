@@ -10,14 +10,14 @@ robot_config:
       # "head": [[160, 640], [480, 1120]], # 需要调整
       "head": [[320, 800], [240, 880]], # 需要调整
       "right": [[0, 480], [104, 744]], # 需要调整
-      # "left": [[0, 480], [104, 744]]
+      "left": [[0, 240], [104, 744]]
   }
   
   # 动作缩放（用于相对位姿控制）
   action_scale: [0.02, 0.06, 1.0]  # [平移缩放, 旋转缩放, 夹爪缩放]
   
   # 相机配置
-  image_keys: ["head", "right"]  # 相机名称列表
+  image_keys: ["left", "right"]  # 相机名称列表
   # A2D支持的相机：
   # - "head": 头部相机
   # - "right": 右手相机
@@ -40,6 +40,7 @@ robot_config:
   abs_pose_limit_low: ${abs_pose_limit_low}
   abs_pose_limit_high: ${abs_pose_limit_high}
   reset_joint: ${reset_joint}
+  use_left_arm_reset: ${use_left_arm_reset}  # 是否用左臂插值重置，在 task 中配置，默认见 config.yaml
   
   # 重置配置
   random_reset: true

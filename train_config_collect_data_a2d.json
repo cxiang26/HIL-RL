@@ -24,7 +24,7 @@
                     "width": 640,
                     "fps": 30
                 },
-                "head": {
+                "left": {
                     "type": "opencv",
                     "index_or_path": 8,
                     "height": 480,
@@ -96,7 +96,7 @@
                     3
                 ]
             },
-            "observation.images.head": {
+            "observation.images.left": {
                 "type": "VISUAL",
                 "shape": [
                     128,
@@ -107,7 +107,7 @@
             "observation.state": {
                 "type": "STATE",
                 "shape": [
-                    7
+                    8
                 ]
             },
             "action": {
@@ -119,7 +119,7 @@
         },
         "features_map": {
             "observation.images.right": "observation.images.right",
-            "observation.images.head": "observation.images.head",
+            "observation.images.left": "observation.images.left",
             "observation.state": "observation.state",
             "action": "action"
         }

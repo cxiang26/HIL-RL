@@ -4,7 +4,7 @@
     "resume": false,
     "seed": 1000,
     "num_workers": 4,
-    "batch_size": 128,
+    "batch_size": 256,
     "steps": 100000,
     "log_freq": 500,
     "save_checkpoint": true,
@@ -36,7 +36,7 @@
                     128
                 ]
             },
-            "observation.images.head": {
+            "observation.images.left": {
                 "type": "VISUAL",
                 "shape": [
                     3,
@@ -47,7 +47,7 @@
             "observation.state": {
                 "type": "STATE",
                 "shape": [
-                    7
+                    8
                 ]
             }
         },
@@ -66,7 +66,7 @@
                     0.225
                 ]
             },
-            "observation.images.head": {
+            "observation.images.left": {
                 "mean": [
                     0.485,
                     0.456,
@@ -79,8 +79,8 @@
                 ]
             },
             "observation.state": {
-                "min": [0.53, -0.3, 0.612, -3, -0.3, -2, 0.0],
-                "max": [0.73,  -0.1, 0.75, -2.5, 0.3, -1, 1.0]
+                "min": [0.53, -0.4, 0.612, -1.0, -1.0, -1.0, 0.0, 0.0],
+                "max": [0.73, -0.15, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0]
             }
         },
         "num_discrete_actions": null,
@@ -132,9 +132,9 @@
             "init_final": 0.05
         },
         "actor_learner_config": {
-            "learner_host": "127.0.0.1",
-            "learner_port": 50051,
-            "policy_parameters_push_frequency": 4
+            "learner_host": "8.130.45.234",
+            "learner_port": 8002,
+            "policy_parameters_push_frequency": 2
         },
         "concurrency": {
             "actor": "threads",
@@ -158,7 +158,7 @@
                     "width": 640,
                     "fps": 30
                 },
-                "head": {
+                "left": {
                     "type": "opencv",
                     "index_or_path": 8,
                     "height": 480,
@@ -230,7 +230,7 @@
                     3
                 ]
             },
-            "observation.images.head": {
+            "observation.images.left": {
                 "type": "VISUAL",
                 "shape": [
                     128,
@@ -241,7 +241,7 @@
             "observation.state": {
                 "type": "STATE",
                 "shape": [
-                    7
+                    8
                 ]
             },
             "action": {
@@ -253,7 +253,7 @@
         },
         "features_map": {
             "observation.images.right": "observation.images.right",
-            "observation.images.head": "observation.images.head",
+            "observation.images.left": "observation.images.left",
             "observation.state": "observation.state",
             "action": "action"
         }

@@ -36,7 +36,7 @@ def make_env(config, fake_env, use_human_intervention, classifier=False, use_gri
                 env = SpaceMouseIntervention(env)
             
             env = AugmentedObservationWrapper(env)
-            env = Quat2EulerWrapper(env)
+            # env = Quat2EulerWrapper(env) # state space is xyz + quat
             env = SERLObsWrapper(env,proprio_keys=config.robot_config.proprio_keys, use_force=config.use_force)
             if classifier:
                 env = MultiCameraBinaryRewardClassifierWrapper(env, config.robot_config.classifier_cfg, cfg=cfg)

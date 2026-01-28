@@ -15,6 +15,7 @@ policy_type: silri
 ego_mode: false
 use_force: false
 load_classifier: true
+use_left_arm_reset: false  # 是否用左臂插值做重置；在 task yaml 中可覆盖（如 a2d_left_right）
 
 
 
