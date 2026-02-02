@@ -67,7 +67,7 @@ robot_config:
   
   # A2D特定配置
   enable_ik: false           # 是否启用逆运动学求解器（用于位姿控制）
-  reset_hand_positions: [1.,]  # 重置时的手部位置（可选）
+  reset_hand_positions: [0.,]  # 重置时的手部位置（可选）
   # reset_head_positions: [-0.12825, 0.43632]  # 重置时的头部位置（可选）
   reset_head_positions: [-0.43632, 0.43632]  # 重置时的头部位置（可选）
 
