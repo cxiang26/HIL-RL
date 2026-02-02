@@ -163,8 +163,8 @@ def train_cli(env_cfg):
         cfg.env.features["observation.state"].shape = [18]
         cfg.policy.input_features["observation.state"].shape = [18]
     elif env_cfg.robot_config.robot_type == "a2d":
-        cfg.env.features["observation.state"].shape = [7]
-        cfg.policy.input_features["observation.state"].shape = [7]
+        cfg.env.features["observation.state"].shape = [8]
+        cfg.policy.input_features["observation.state"].shape = [8]
     else:
         cfg.env.features["observation.state"].shape = [14] if env_cfg.use_force else [8]
         cfg.policy.input_features["observation.state"].shape = [14] if env_cfg.use_force else [8]
