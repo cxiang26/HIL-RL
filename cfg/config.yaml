@@ -16,6 +16,8 @@ ego_mode: false
 use_force: false
 load_classifier: true
 use_left_arm_reset: false  # 是否用左臂插值做重置；在 task yaml 中可覆盖（如 a2d_left_right）
+# Actor 加载本地策略时可通过命令行覆盖，例如：pretrained_policy_name_or_path=experiments/a2d_left_right/expert_model_silri
+pretrained_policy_name_or_path: null
 
 
 

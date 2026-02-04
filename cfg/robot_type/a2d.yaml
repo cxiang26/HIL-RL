@@ -72,6 +72,6 @@ robot_config:
   reset_head_positions: [-0.43632, 0.43632]  # 重置时的头部位置（可选）
 
   # reset_waist_positions: [0.67205, 51.96433] # 重置时的腰部位置（可选）
-  reset_waist_positions: [0.35, 32] # 重置时的腰部位置（可选） 40
+  reset_waist_positions: [0.35, 32.] # 重置时的腰部位置（可选） 40
 
 
