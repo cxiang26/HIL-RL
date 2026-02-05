@@ -44,7 +44,7 @@ robot_config:
   
   # 重置配置
   random_reset: true
-  random_xy_range: 0.02      # XY平面随机范围（米）
+  random_xy_range: 0.04      # XY平面随机范围（米）
   random_rz_range: 0.05      # Z轴旋转随机范围（弧度）
   gripper_sleep: 0.05        # 夹爪动作间隔（秒）
   max_episode_length: ${max_episode_length}

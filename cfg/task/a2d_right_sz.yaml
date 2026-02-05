@@ -40,7 +40,7 @@ classifier_cfg:
     target_hz: 10
     batch_size: 128
     enable_stacking: false
-    load_classifier: true
+    load_classifier: false
 
 # 夹爪配置
 close_gripper: false
