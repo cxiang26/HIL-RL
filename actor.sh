@@ -13,7 +13,7 @@ echo "Task name: ${task_name}"
 mkdir -p experiments/${task_name}
 cd experiments/${task_name}
 
-python3 ../../actor.py robot_type@_global_=a2d task@_global_=${task_name} classifier_cfg.require_train=true use_human_intervention=true ego_mode=true policy_type=silri
+python3 ../../actor.py robot_type@_global_=a2d task@_global_=${task_name} classifier_cfg.require_train=true use_human_intervention=true ego_mode=false policy_type=silri
 
 # [debug]
 # python3 ../../actor.py robot_type@_global_=a2d task@_global_=${task_name} classifier_cfg.require_train=true freeze_actor=true use_human_intervention=false ego_mode=false policy_type=silri

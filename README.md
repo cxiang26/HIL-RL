@@ -180,6 +180,90 @@ policy.actor_learner_config.learner_host: the ip of learner server
 
 After configureing all these above parameters, first run the learner on learner server by running `bash learner.sh`, then, run the actor process on actor server by running `bash actor.sh`.
 
+### 📑 Stage 4: Inference and Evaluation
+
+After training, you can evaluate the trained policy by running inference. The trained model checkpoints are saved in:
+```
+experiments/{task_name}/outputs/train/{policy_type}/checkpoints/{step}/pretrained_model
+```
+
+#### Method 1: Using RL Evaluation Script (Recommended)
+
+```bash
+python3 lerobot/src/lerobot/scripts/rl/eval_policy.py \
+    robot_type@_global_=a2d \
+    task@_global_=a2d_griper \
+    policy_type=silri \
+    pretrained_policy_name_or_path=experiments/a2d_griper/outputs/train/silri/checkpoints/005000/pretrained_model
+```
+
+#### Method 2: 真机测试（推荐：使用 run_inference.py）
+
+使用独立脚本 `run_inference.py`，**不连接 Learner**，仅加载指定 policy 与（可选）classifier 权重在真机上跑推理。
+
+**参数说明**
+
+- `--policy_path`（必填）：策略权重目录，需包含 `config.json` 和 `model.safetensors`
+- `--classifier_path`（可选）：分类器 checkpoint 目录（其下应有 `pretrained_model`），不指定则不用分类器奖励
+- `--task`：任务名，对应 `cfg/task/<task>.yaml`，默认 `a2d_griper`
+- `--robot_type`：机器人类型，对应 `cfg/robot_type/<robot_type>.yaml`，默认 `a2d`
+- `--num_episodes`：运行 episode 数，默认 10
+- `--max_steps`：每 episode 最大步数，0 表示使用任务配置的 `max_episode_length`，默认 0
+- `--device`：policy 运行设备，默认 `cuda`
+
+**使用示例**
+
+```bash
+cd /path/to/HIL-RL
+
+# 仅 policy，不使用分类器
+python run_inference.py \
+    --policy_path experiments/a2d_griper/exp_local/.../checkpoints/005900/pretrained_model
+
+# 同时指定 policy 与 classifier
+python run_inference.py \
+    --policy_path experiments/a2d_griper/exp_local/.../checkpoints/005900/pretrained_model \
+    --classifier_path experiments/a2d_griper/classifier/checkpoints/000500
+
+# 指定任务、机器人类型与 episode 数
+python run_inference.py \
+    --policy_path experiments/a2d_left_right/outputs/train/silri/checkpoints/005000/pretrained_model \
+    --task a2d_left_right \
+    --robot_type a2d \
+    --num_episodes 5
+
+# 完整参数示例
+python run_inference.py \
+    --policy_path experiments/a2d_griper/outputs/train/silri/checkpoints/005000/pretrained_model \
+    --classifier_path experiments/a2d_griper/classifier/checkpoints/000500 \
+    --task a2d_griper \
+    --robot_type a2d \
+    --num_episodes 10 \
+    --max_steps 100 \
+    --device cuda
+```
+
+**注意事项**
+
+- 路径请按本机实际 `experiments` 与 checkpoint 目录修改
+- checkpoint 目录应包含 `config.json` 和 `model.safetensors` 文件
+- 如果指定 `--classifier_path`，其目录下应包含 `pretrained_model` 子目录
+
+#### Method 3: Using Generic Evaluation Script
+
+```bash
+lerobot-eval \
+    --policy.path=experiments/a2d_griper/outputs/train/silri/checkpoints/005000/pretrained_model \
+    --env.type=gym_manipulator \
+    --env.robot.type=so100_follower_end_effector \
+    --env.robot.port=/dev/ttyACM0 \
+    --eval.n_episodes=10 \
+    --eval.batch_size=1 \
+    --policy.device=cuda
+```
+
+**Note**: Replace the checkpoint path with your actual trained model path. The checkpoint directory should contain `config.json` and `model.safetensors` files.
+
 
 
 
