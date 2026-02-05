@@ -17,7 +17,7 @@ robot_config:
   action_scale: [0.02, 0.06, 1.0]  # [平移缩放, 旋转缩放, 夹爪缩放]
   
   # 相机配置
-  image_keys: ["left", "right"]  # 相机名称列表
+  image_keys: ["right"]  # 相机名称列表
   # A2D支持的相机：
   # - "head": 头部相机
   # - "right": 右手相机
@@ -31,9 +31,9 @@ robot_config:
   
   # 图像尺寸调整
   image_resize:
-    "head": [128, 128, 3]
-    "right": [128, 128, 3]
-    "left": [128, 128, 3]
+    "head": [256, 256, 3]
+    "right": [256, 256, 3]
+    "left": [256, 256, 3]
   
   # 从任务配置中继承的参数
   target_pose: ${target_pose}

@@ -21,16 +21,8 @@
             "observation.images.right": {
                 "type": "VISUAL",
                 "shape": [
-                    128,
-                    128,
-                    3
-                ]
-            },
-            "observation.images.head": {
-                "type": "VISUAL",
-                "shape": [
-                    128,
-                    128,
+                    256,
+                    256,
                     3
                 ]
             },

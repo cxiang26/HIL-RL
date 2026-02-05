@@ -1,0 +1,52 @@
+# A2D 夹爪任务配置
+task_name: a2d_right_sz
+
+# 安全限制（示例值，需要根据实际机器人调整）
+abs_pose_limit_high: [0.73,  -0.15, 0.75, -2.5, 1, 1]
+abs_pose_limit_low: [0.53, -0.4, 0.612, -3.1, -1, -1]
+
+#  0.66795, -0.217  ,  0.84573,  3.11036, -0.04319, -1.56098
+# 重置关节位置（14个关节，A2D机器人）
+# reset_joint: [-1.28, 0.79, 1.00, -0.50, 0.07, 1.38, 0.46, 2.24, -1.17, 2.36, -0.02, -2.43, 1.39, -0.89]
+reset_joint: [0.58822, 0.16408, 0.58809, -0.00352, 0.80161, -0.59558, 0.05202, 
+              0.63857, -0.34074, 0.67662, 0.98727, -0.07589, 0.00384, -0.13972]
+
+# 0.63914, -0.29398,  0.70277,  0.99919,  0.02676, -0.02287, -0.01939
+# reset_pose: [0.6097, 0.5372, 0.8757, 0.8437, -0.4587, 0.1905, -0.2036, 0.74323, -0.26486,  0.74894,  0.75629, -0.65283, -0.00427,  0.04255]
+use_left_arm_reset: false
+
+# 数据集配置（测试时不需要）
+"dataset": {
+    "repo_id": "silri",
+    "use_imagenet_stats": false,
+    "root": "../../../a2d_right_sz",
+    "video_backend": "pyav"
+}
+
+# 奖励配置
+gripper_penalty: -0.2
+
+# 分类器配置（测试时不需要）
+classifier_cfg:
+    classifier_keys: ["right"]
+    pretrained_encoder_path: ../resnet10_params.pkl
+    checkpoint_path: classifier/checkpoints/000500
+    dataset_path: offline_dataset/a2d_right_sz
+    reward_pos: 10.0
+    reward_neg: -0.05
+    require_train: true
+    task_name: ${task_name}
+    algorithm: hil-serl
+    target_hz: 10
+    batch_size: 128
+    enable_stacking: false
+    load_classifier: true
+
+# 夹爪配置
+close_gripper: false
+fix_gripper: false
+
+# 任务配置
+max_episode_length: 100
+max_train_time: 4800      # 最大训练时间（秒），2400秒 = 40分钟
+
